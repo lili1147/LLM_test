@@ -1,0 +1,16 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ASR Review Schema",
+  "type": "object",
+  "properties": {
+    "video_id": {"type":"string"},
+    "segment_start": {"type":"number"},
+    "segment_end": {"type":"number"},
+    "reference": {"type":"string"},
+    "asr": {"type":"string"},
+    "ai_judgement": {"type":"object"},
+    "auditor_action": {"type":"string", "enum":["ACCEPT","REJECT","EDIT"]},
+    "auditor_note": {"type":"string"}
+  },
+  "required": ["video_id","segment_start","segment_end","reference","asr","ai_judgement"]
+}
