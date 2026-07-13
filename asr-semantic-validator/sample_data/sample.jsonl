@@ -1,0 +1,3 @@
+{"video_id":"vid001","segment_start":0.0,"segment_end":3.2,"reference":"把灯打开","asr":"开灯"}
+{"video_id":"vid001","segment_start":3.3,"segment_end":6.0,"reference":"请把音量调到五","asr":"请把音量调到五"}
+{"video_id":"vid002","segment_start":0.0,"segment_end":2.5,"reference":"李明说他回来了","asr":"黎明说他回来了"}

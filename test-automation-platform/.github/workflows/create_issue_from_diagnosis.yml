@@ -1,0 +1,34 @@
+name: Create issue from high-confidence diagnosis
+
+on:
+  workflow_dispatch:
+  repository_dispatch:
+  workflow_call:
+
+jobs:
+  analyze-and-create-issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call diagnostics service
+        env:
+          DIAGNOSTICS_URL: ${{ secrets.DIAGNOSTICS_URL }}
+          EVENT_PAYLOAD: ${{ toJson(github.event) }}
+        run: |
+          echo "POSTing event to diagnostics service"
+          curl -s -X POST -H "Content-Type: application/json" \
+            -d '{"run_id":"manual","repo":"example/repo","test_case":"tests/test_login.py::test_login_success","stacktrace":"Traceback ...","stdout":"..."}' \
+            "${DIAGNOSTICS_URL}/analyze" -o /tmp/diagnosis.json
+          cat /tmp/diagnosis.json
+          # extract llm.auto_issue_draft.title if confidence threshold satisfied (this is just a placeholder)
+          python - <<'PY'
+import json,sys,os
+d=json.load(open('/tmp/diagnosis.json'))
+llm=d.get('llm',{})
+issue=d.get('llm',{}).get('auto_issue_draft')
+if issue:
+    print('Issue draft found:')
+    print(issue.get('title'))
+    # In real workflow: use GitHub API to create issue with GITHUB_TOKEN
+else:
+    print('No usable issue draft')
+PY
